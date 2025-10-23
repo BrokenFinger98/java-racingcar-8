@@ -1,7 +1,12 @@
 package racingcar;
 
+import racingcar.application.GameRunner;
+import racingcar.ui.InputView;
+import racingcar.ui.OutputView;
+
 public class Application {
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
+        GameRunner gameRunner = new GameRunner(new InputView(), new OutputView());
+        gameRunner.run();
     }
 }
