@@ -13,13 +13,17 @@ public class InputView {
         System.out.println(ASK_CAR_NAMES_MESSAGE);
         String line = Console.readLine();
         validateCarNamesInput(line);
-        return Arrays.stream(line.split(",")).map(String::trim).toList();
+        return parseCarNames(line);
     }
 
     public int readAttemptCount() {
         System.out.println(ASK_ATTEMPT_COUNTS_MESSAGE);
         String line = Console.readLine();
         return parseAttemptCount(line);
+    }
+
+    private static List<String> parseCarNames(String line) {
+        return Arrays.stream(line.split(",")).map(String::trim).toList();
     }
 
     private static void validateCarNamesInput(String line) {
