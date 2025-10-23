@@ -1,5 +1,7 @@
 package racingcar.domain;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public record RoundResult(
@@ -10,6 +12,6 @@ public record RoundResult(
         if (snapshot == null || snapshot.isEmpty()) {
             throw new IllegalArgumentException("라운드 결과는 비어 있을 수 없습니다.");
         }
-        snapshot = Map.copyOf(snapshot);
+        snapshot = Collections.unmodifiableMap(new LinkedHashMap<>(snapshot));
     }
 }
