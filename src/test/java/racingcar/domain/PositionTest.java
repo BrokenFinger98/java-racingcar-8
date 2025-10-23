@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 class PositionTest {
 
     @Test
-    @DisplayName("Position을 생성한다.")
-    void position() {
+    @DisplayName("Position 생성: 양수 값으로 생성된다")
+    void position_shouldCreate_whenPositiveValue() {
         // given
         int value = 1;
 
@@ -21,8 +21,8 @@ class PositionTest {
     }
 
     @Test
-    @DisplayName("Position 생성시, value가 음수면 IllegalArgumentException 발생")
-    void position_shouldThrow_whenNonPositiveValue() {
+    @DisplayName("Position 생성: 음수 입력 시 예외를 발생시킨다")
+    void position_shouldThrow_whenNegativeValue() {
         // given
         int value = -1;
 
@@ -31,8 +31,8 @@ class PositionTest {
     }
 
     @Test
-    @DisplayName("Position을 1만큼 증가시킨다.")
-    void forward() {
+    @DisplayName("forward: 현재 위치를 1 증가시킨다")
+    void forward_shouldIncreasePositionByOne() {
         // given
         int value = 1;
         Position position = new Position(value);

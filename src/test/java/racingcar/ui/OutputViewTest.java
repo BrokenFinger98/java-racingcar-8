@@ -35,7 +35,7 @@ class OutputViewTest {
 
     @Test
     @DisplayName("printStart: '실행 결과' 헤더를 줄바꿈과 함께 출력한다")
-    void printStart_shouldPrintHeader() {
+    void printStart_shouldPrintHeaderWithNewLine() {
         // given
         OutputView view = new OutputView();
 
@@ -48,8 +48,8 @@ class OutputViewTest {
     }
 
     @Test
-    @DisplayName("printRound: RoundResult 스냅샷을 입력 순서대로 '이름 : -반복' 형식으로 출력한다")
-    void printRound_shouldPrintSnapshotInGivenOrder() {
+    @DisplayName("printRound: RoundResult 스냅샷을 입력 순서대로 출력한다")
+    void printRound_shouldPrintSnapshotInInputOrder() {
         // given
         Map<String, Integer> snap = new LinkedHashMap<>();
         snap.put("pobi", 2);
@@ -71,7 +71,7 @@ class OutputViewTest {
     }
 
     @Test
-    @DisplayName("printWinners: '최종 우승자 : 이름1, 이름2' 형식으로 출력한다")
+    @DisplayName("printWinners: 우승자를 쉼표로 구분하여 출력한다")
     void printWinners_shouldPrintWinnersJoinedByComma() {
         // given
         OutputView view = new OutputView();

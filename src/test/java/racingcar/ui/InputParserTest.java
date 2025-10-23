@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class InputParserTest {
 
     @Test
-    @DisplayName("parseCarNames: 쉼표로 구분된 입력을 공백 제거 후 List로 변환한다")
+    @DisplayName("parseCarNames: 쉼표로 구분된 문자열을 공백 제거 후 리스트로 변환한다")
     void parseCarNames_shouldSplitAndTrim() {
         // given
         String input = " pobi, woni ,jun ";
@@ -22,7 +22,7 @@ class InputParserTest {
     }
 
     @Test
-    @DisplayName("parseCarNames: 빈 문자열이면 IllegalArgumentException 발생")
+    @DisplayName("parseCarNames: 빈 문자열 입력 시 예외를 발생시킨다")
     void parseCarNames_shouldThrow_whenBlank() {
         // given
         String input = "   ";
@@ -32,8 +32,8 @@ class InputParserTest {
     }
 
     @Test
-    @DisplayName("parseAttemptCount: 양의 정수를 반환한다")
-    void parseAttemptCount_shouldReturnPositiveInt() {
+    @DisplayName("parseAttemptCount: 문자열을 정수로 변환한다")
+    void parseAttemptCount_shouldParsePositiveInteger() {
         // given
         String input = "5";
 
@@ -58,14 +58,14 @@ class InputParserTest {
     }
 
     @Test
-    @DisplayName("parseAttemptCount: 0 이하이면 IllegalArgumentException 발생")
+    @DisplayName("parseAttemptCount: 0 이하 입력 시 예외를 발생시킨다")
     void parseAttemptCount_shouldThrow_whenNonPositive() {
         assertThrows(IllegalArgumentException.class, () -> InputParser.parseAttemptCount("0"));
         assertThrows(IllegalArgumentException.class, () -> InputParser.parseAttemptCount("-3"));
     }
 
     @Test
-    @DisplayName("parseAttemptCount: 정수가 아니면 IllegalArgumentException 발생")
+    @DisplayName("parseAttemptCount: 정수가 아닌 입력 시 예외를 발생시킨다")
     void parseAttemptCount_shouldThrow_whenNotInteger() {
         assertThrows(IllegalArgumentException.class, () -> InputParser.parseAttemptCount("abc"));
         assertThrows(IllegalArgumentException.class, () -> InputParser.parseAttemptCount("3.14"));

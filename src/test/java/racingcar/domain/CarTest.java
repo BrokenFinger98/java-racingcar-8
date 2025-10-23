@@ -23,8 +23,8 @@ class CarTest {
     }
 
     @Test
-    @DisplayName("Car를 생성한다.")
-    void car() {
+    @DisplayName("Car 생성: 이름이 주어지면 초기 위치 0으로 생성된다")
+    void car_shouldCreate_withInitialPositionZero() {
         // given
         CarName carName = new CarName("pobi");
 
@@ -38,7 +38,7 @@ class CarTest {
 
     @Test
     @DisplayName("moveIf: 이동 조건이 true일 경우 위치가 1 증가한다")
-    void moveIf_shouldMove_whenConditionIsTrue() {
+    void moveIf_shouldIncreasePosition_whenConditionTrue() {
         // given
         FakeNumberPicker fakeNumberPicker = new FakeNumberPicker(4);
         randomMoveStrategy = new RandomMoveStrategy(fakeNumberPicker);
@@ -54,8 +54,8 @@ class CarTest {
     }
 
     @Test
-    @DisplayName("moveIf: 이동 조건이 false일 경우 위치가 그대로 유지된다")
-    void moveIf_shouldNotMove_whenConditionIsFalse() {
+    @DisplayName("moveIf: 이동 조건이 false일 경우 위치가 유지된다")
+    void moveIf_shouldNotChangePosition_whenConditionFalse() {
         // given
         FakeNumberPicker fakeNumberPicker = new FakeNumberPicker(3);
         randomMoveStrategy = new RandomMoveStrategy(fakeNumberPicker);

@@ -21,8 +21,8 @@ class RandomMoveStrategyTest {
     }
 
     @Test
-    @DisplayName("랜덤 숫자가 4 이상이면 true를 반환한다.")
-    void shouldReturnTrueWhenNumberIsGreaterOrEqualTo4() {
+    @DisplayName("shouldMove: 랜덤 숫자가 4 이상이면 true를 반환한다")
+    void shouldMove_shouldReturnTrue_whenNumberGreaterOrEqualTo4() {
         // given
         FakeNumberPicker fakeNumberPicker = new FakeNumberPicker(4);
         RandomMoveStrategy randomMoveStrategy = new RandomMoveStrategy(fakeNumberPicker);
@@ -35,8 +35,8 @@ class RandomMoveStrategyTest {
     }
 
     @Test
-    @DisplayName("랜덤 숫자가 4 미만이면 false를 반환한다.")
-    void shouldReturnFalseWhenNumberIsLessThan4() {
+    @DisplayName("shouldMove: 랜덤 숫자가 4 미만이면 false를 반환한다")
+    void shouldMove_shouldReturnFalse_whenNumberLessThan4() {
         // given
         FakeNumberPicker fakeNumberPicker = new FakeNumberPicker(3);
         RandomMoveStrategy randomMoveStrategy = new RandomMoveStrategy(fakeNumberPicker);

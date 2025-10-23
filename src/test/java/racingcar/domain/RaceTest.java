@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class RaceTest {
 
     @Test
-    @DisplayName("Race 생성: 정상적인 자동차 목록으로 생성된다")
+    @DisplayName("Race 생성: 유효한 자동차 목록으로 생성된다")
     void race_shouldCreate_whenValidCars() {
         // given
         MoveStrategy moveStrategy = new RandomMoveStrategy(new MissionUtilsNumberPicker());
@@ -22,7 +22,7 @@ class RaceTest {
     }
 
     @Test
-    @DisplayName("Race 생성: 자동차 목록이 비어 있으면 예외 발생")
+    @DisplayName("Race 생성: 자동차 목록이 비어 있으면 예외를 발생시킨다")
     void race_shouldThrow_whenCarsEmpty() {
         // given
         MoveStrategy moveStrategy = new RandomMoveStrategy(new MissionUtilsNumberPicker());
@@ -52,7 +52,7 @@ class RaceTest {
 
     @Test
     @DisplayName("runOneRound: 일부 자동차만 이동 조건을 만족하면 해당 자동차만 전진한다")
-    void runOneRound_shouldMoveOnlyMatchingCars_whenMixedConditions() {
+    void runOneRound_shouldMoveMatchingCarsOnly_whenMixedConditions() {
         // given
         MoveStrategy moveStrategy = new RandomMoveStrategy(new SequenceNumberPicker(4, 3));
         Car car1 = car("pobi");
@@ -89,7 +89,7 @@ class RaceTest {
     }
 
     @Test
-    @DisplayName("findWinners: 최고 위치의 자동차가 하나일 경우 단일 우승자를 반환한다")
+    @DisplayName("findWinners: 최고 위치 자동차가 하나일 경우 단일 우승자를 반환한다")
     void findWinners_shouldReturnSingleWinner_whenOnlyOneLeads() {
         // given
         MoveStrategy moveStrategy = new RandomMoveStrategy(new SequenceNumberPicker(4, 3));

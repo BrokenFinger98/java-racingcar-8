@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 class CarNameTest {
 
     @Test
-    @DisplayName("CarName을 생성한다.")
-    void carName() {
+    @DisplayName("CarName 생성: 정상 입력 시 객체를 생성한다")
+    void carName_shouldCreate_whenValidName() {
         // given
         String pobi = "pobi";
 
@@ -19,30 +19,33 @@ class CarNameTest {
         // then
         assertEquals(pobi, carName.value());
     }
-    
+
     @Test
-    @DisplayName("이름이 null이면 IllegalArgumentException 발생")
+    @DisplayName("CarName 생성: null 입력 시 예외를 발생시킨다")
     void carName_shouldThrow_whenNull() {
         // given
         String pobi = null;
+
         // when & then
         assertThrows(IllegalArgumentException.class, () -> new CarName(pobi));
     }
-    
+
     @Test
-    @DisplayName("이름이 Blank이면 IllegalArgumentException 발생")
+    @DisplayName("CarName 생성: 공백 입력 시 예외를 발생시킨다")
     void carName_shouldThrow_whenBlank() {
         // given
         String pobi = "";
+
         // when & then
         assertThrows(IllegalArgumentException.class, () -> new CarName(pobi));
     }
-    
+
     @Test
-    @DisplayName("이름이 5자 초과면 IllegalArgumentException 발생")
-    void carName_shouldThrow_whenLengthGreaterThan5() {
+    @DisplayName("CarName 생성: 이름이 5자 초과 시 예외를 발생시킨다")
+    void carName_shouldThrow_whenLengthExceedsLimit() {
         // given
         String name = "abcdef";
+
         // when & then
         assertThrows(IllegalArgumentException.class, () -> new CarName(name));
     }
