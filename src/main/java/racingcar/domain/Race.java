@@ -1,5 +1,6 @@
 package racingcar.domain;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,7 +30,13 @@ public class Race {
     }
 
     private Map<String, Integer> snapshotPositions() {
-        return cars.stream().collect(Collectors.toMap(Car::name, Car::position));
+        return cars.stream()
+                .collect(Collectors.toMap(
+                        Car::name,
+                        Car::position,
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
     }
 
     private List<String> extractWinners(int maxPosition) {
