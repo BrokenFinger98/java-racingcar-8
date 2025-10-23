@@ -116,67 +116,126 @@ Randoms.pickNumberInRange(0, 9);
 ## 기능 목록
 
 ### 패키지 구조
-```java
 racingcar
-├─ application
-│   └─ GameRunner.java           // 애플리케이션 흐름 오케스트레이션
-├─ domain
-│   ├─ Car.java                  // 자동차 엔티티 (불변 name, 가변 position)
-│   ├─ CarName.java              // 이름 검증(<=5), 값 객체
-│   ├─ Position.java             // 위치 값 객체(>=0)
-│   ├─ MoveStrategy.java         // 이동 여부 결정 전략(테스트 용이)
-│   ├─ RandomMoveStrategy.java   // Randoms 기반 구현(>=4면 전진)
-│   ├─ Race.java                 // 레이스 전체 로직(라운드 진행, 우승자 계산)
-│   └─ RoundResult.java          // 단일 라운드 결과 스냅샷 (출력용 DTO)
-├─ ui
-│   ├─ InputView.java            // 입력 안내 및 읽기
-│   └─ OutputView.java           // 출력 전담
-└─ Application.java              // main()
-```
+- application
+    - GameRunner.java
+- domain
+    - Car.java
+    - CarName.java
+    - Position.java
+    - MoveStrategy.java
+    - RandomMoveStrategy.java
+    - Race.java
+    - RoundResult.java
+- ui
+    - InputView.java
+    - OutputView.java
+- Application.java
 
-**application**
-- GameRunner.java
-  - 게임 전체의 실행 흐름을 관리 (입력 → 진행 → 출력)
-  - 도메인과 UI 계층을 연결하는 오케스트레이터 역할
+---
 
-**domain**
-  - Car.java
-    - 자동차 도메인 객체
-    - 이름(CarName)과 위치(Position)를 보유
-    - 주어진 이동 전략(MoveStrategy)에 따라 전진 가능
-  
-  - CarName.java
-    - 자동차 이름 값 객체 
-    - 이름의 유효성 검증 수행 (공백 불가, 5자 이하)
+## 클래스 설명
 
-  - Position.java 
-    - 자동차의 위치 값 객체 
-    - 음수 위치 불가, 전진 시 1 증가
+### application
 
-  - MoveStrategy.java 
-    - 자동차 이동 여부를 결정하는 전략 인터페이스 
-    - 테스트에서 고정 전략으로 대체 가능 (전진/정지 제어 용이)
+#### `GameRunner`
+- **역할:** 애플리케이션 전체 실행 흐름을 담당하는 오케스트레이터  
+  (입력 → 레이스 진행 → 결과 출력)
+- **책임:**
+    - 사용자 입력 처리 (`readCarNames`, `readAttemptCount`)
+    - 자동차 객체 생성 (`createCars`)
+    - 라운드 반복 실행 (`playRounds`)
+    - 최종 우승자 출력
+- `MoveStrategy`를 의존성 주입 방식으로 받아 테스트 용이성 확보
+- `Console.close()`를 `finally` 블록에서 수행하여 리소스 안전하게 종료
 
-  - RandomMoveStrategy.java 
-    - camp.nextstep.edu.missionutils.Randoms를 사용한 랜덤 이동 전략 
-    - 0~9 범위의 난수 중 4 이상일 경우 전진
+---
 
-  - Race.java 
-    - 전체 레이스를 관리 
-    - 매 라운드 실행 및 우승자 계산 수행
+### domain
 
-  - RoundResult.java 
-  - 각 라운드별 실행 결과(자동차 이름별 위치)를 스냅샷 형태로 저장
+#### `Car`
+- **역할:** 하나의 자동차를 표현하는 도메인 엔티티
+- **책임:**
+    - 불변 객체 `CarName`을 통해 이름 관리
+    - `Position` 객체를 통해 현재 위치 관리
+    - `moveIf(MoveStrategy)`로 주어진 전략에 따라 이동 여부 결정
 
-**ui**
-  - InputView.java 
-    - 사용자 입력 안내 및 입력값 읽기 담당 
-    - 자동차 이름 목록과 시도 횟수를 입력받음
- 
-  - OutputView.java 
-    - 콘솔 출력 담당 
-      실행 결과, 라운드별 상태, 우승자 출력
+#### `CarName`
+- **역할:** 자동차 이름을 표현하는 값 객체 (Value Object)
+- **검증 규칙:**
+    - `null` 또는 공백 문자열 금지
+    - 최대 길이 5자 제한 (`"자동차 이름은 5자 이하여야 합니다."`)
 
-**Application.java**
-  - 프로그램 진입점 (main() 메서드)
-  - GameRunner 실행을 통해 전체 게임을 시작
+#### `Position`
+- **역할:** 자동차의 현재 위치를 표현하는 값 객체
+- **검증 규칙:**
+    - 음수 값 불가 (`"위치는 음수가 될 수 없습니다."`)
+- **동작:**
+    - `forward()` 호출 시 1 증가된 새로운 `Position` 반환
+
+#### `MoveStrategy`
+- **역할:** 자동차의 이동 여부를 결정하는 전략 인터페이스
+- **특징:** 테스트에서 더미(Fake) 구현체로 교체 가능하여 전진/정지 제어 용이
+
+#### `RandomMoveStrategy`
+- **역할:** MissionUtils Randoms를 이용해 난수를 생성하고 이동 여부 결정
+- **로직:** 0~9 사이 난수를 생성하여 `4 이상일 경우 이동(true)`
+
+#### `NumberPicker`
+- **역할:** 난수 생성에 대한 추상화 계층
+- **용도:** 테스트에서 고정값(`FakeNumberPicker`, `FixedNumberPicker`)으로 대체 가능
+
+#### `MissionUtilsNumberPicker`
+- **역할:** `camp.nextstep.edu.missionutils.Randoms.pickNumberInRange()`를 사용하는 구현체
+- **범위:** 0~9 정수 반환
+
+#### `Race`
+- **역할:** 전체 레이스를 관리하는 핵심 클래스
+- **책임:**
+    - 자동차 리스트를 받아 매 라운드 진행 (`runOneRound()`)
+    - `RoundResult`를 반환하여 각 라운드 상태를 스냅샷 형태로 제공
+    - 우승자 계산 (`findWinners()`): 최대 위치를 기준으로 공동 우승자 허용
+- **유효성 검증:** 자동차 리스트가 비어 있을 경우 예외 발생
+
+#### `RoundResult`
+- **역할:** 단일 라운드의 결과를 자동차별 위치로 저장하는 불변 객체
+- **특징:**
+    - 내부 `Map<String, Integer>`를 `Collections.unmodifiableMap(new LinkedHashMap<>(snapshot))`으로 래핑
+    - 입력 순서 유지 (`LinkedHashMap`)
+    - 외부에서 Map 수정 불가능 (불변성 보장)
+
+---
+
+### ui
+
+#### `InputParser`
+- **역할:** 문자열 입력값을 유효성 검증 및 변환하는 유틸 클래스
+- **책임:**
+    - 자동차 이름 문자열을 `List<String>`으로 분리 (`split(",")`)
+    - 시도 횟수 문자열을 정수로 변환 및 유효성 검증 (`> 0`)
+
+#### `InputView`
+- **역할:** 사용자에게 입력을 요청하고 메시지를 출력하는 View 계층
+- **출력 메시지:**
+    - `"경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)"`
+    - `"시도할 횟수는 몇 회인가요?"`
+
+#### `OutputView`
+- **역할:** 콘솔 출력을 담당하는 View 계층
+- **책임:**
+    - `"실행 결과"` 헤더 출력
+    - 각 라운드 결과를 자동차 이름 순서대로 출력
+    - 우승자 목록을 `"최종 우승자 : pobi, woni"` 형식으로 출력
+- **특징:**
+    - `LinkedHashMap` 기반으로 입력 순서 보장
+    - 테스트에서 `System.out` 캡처를 통해 출력 검증 가능
+
+---
+
+### Application
+- **역할:** 프로그램의 진입점 (`main` 메서드)
+- **책임:**
+    - `InputView` / `OutputView` 객체 생성
+    - `GameRunner` 실행을 통해 전체 게임 시작
+
+---
