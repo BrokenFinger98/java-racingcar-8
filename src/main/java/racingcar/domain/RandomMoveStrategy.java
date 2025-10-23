@@ -1,11 +1,14 @@
 package racingcar.domain;
 
-import camp.nextstep.edu.missionutils.Randoms;
-
 public class RandomMoveStrategy implements MoveStrategy {
+    private final NumberPicker picker;
+
+    public RandomMoveStrategy(NumberPicker picker) {
+        this.picker = picker;
+    }
 
     @Override
     public boolean shouldMove() {
-        return Randoms.pickNumberInRange(0, 9) >= 4;
+        return picker.pickNumberInRange(0, 9) >= 4;
     }
 }
