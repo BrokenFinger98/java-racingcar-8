@@ -1,4 +1,4 @@
-package racingcar.domain;
+package racingcar.ui;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +9,7 @@ public class InputParser {
     }
 
     public static List<String> parseCarNames(String line) {
+        validateCarNamesInput(line);
         return Arrays.stream(line.split(",")).map(String::trim).toList();
     }
 
@@ -21,6 +22,12 @@ public class InputParser {
             return n;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("시도 횟수는 정수여야 합니다.");
+        }
+    }
+
+    private static void validateCarNamesInput(String line) {
+        if (line == null || line.isBlank()) {
+            throw new IllegalArgumentException("자동차 이름을 입력해야 합니다.");
         }
     }
 }
